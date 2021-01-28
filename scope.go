@@ -34,10 +34,13 @@ func (s *Scope) Get(name string) Plugin {
 	return nil
 }
 
-func (s *Scope) Execute(ctx context.Context, message interface{}) {
+func (s *Scope) Execute(ctx context.Context, data interface{}) {
+	message := messagePool.Get().(*Message)
+	message.Data = data
 	for _, plugin := range s.plugins {
 		(*plugin)(ctx, message)
 	}
+	messagePool.Put(message)
 }
 
 // getRIndex get right index from string slice

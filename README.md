@@ -1,6 +1,8 @@
 # Simple Plugin Framework
 
 ```go
+package plugin_test
+
 import (
 	"context"
 	"fmt"
@@ -40,8 +42,10 @@ func Example() {
 	// 4
 }
 
-func myPlugin1(ctx context.Context, msg interface{}) {
-	if m, ok := msg.(*config.MapConfig); ok {
+func myPlugin1(ctx context.Context, msg *plugin.Message) {
+	msg.Lock()
+	defer msg.Unlock()
+	if m, ok := msg.Data.(*config.MapConfig); ok {
 		m.Set("protocal.something", "plugin1-result")
 		m.Set("protocal.other1", map[string]interface{}{
 			"a": 1,
@@ -51,8 +55,10 @@ func myPlugin1(ctx context.Context, msg interface{}) {
 	fmt.Println("my plugin1!")
 }
 
-func myPlugin2(ctx context.Context, msg interface{}) {
-	if m, ok := msg.(*config.MapConfig); ok {
+func myPlugin2(ctx context.Context, msg *plugin.Message) {
+	msg.Lock()
+	defer msg.Unlock()
+	if m, ok := msg.Data.(*config.MapConfig); ok {
 		m.Set("protocal.something", "plugin2-result")
 		m.Set("protocal.other2", map[string]interface{}{
 			"c": 2,
@@ -62,8 +68,10 @@ func myPlugin2(ctx context.Context, msg interface{}) {
 	fmt.Println("my plugin2!")
 }
 
-func myPlugin3(ctx context.Context, msg interface{}) {
-	if m, ok := msg.(*config.MapConfig); ok {
+func myPlugin3(ctx context.Context, msg *plugin.Message) {
+	msg.Lock()
+	defer msg.Unlock()
+	if m, ok := msg.Data.(*config.MapConfig); ok {
 		m.Set("protocal.something", "plugin3-result")
 		m.Set("protocal.other3", map[string]interface{}{
 			"e": 4,

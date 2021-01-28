@@ -8,8 +8,8 @@ import (
 )
 
 func createTestPlugin(name string) Plugin {
-	return func(ctx context.Context, msg interface{}) {
-		s := msg.(*[]string)
+	return func(ctx context.Context, msg *Message) {
+		s := msg.Data.(*[]string)
 		*s = append(*s, name)
 	}
 }
